@@ -19,17 +19,17 @@ namespace TheWorld
 {
     public class Startup
     {
-		public static IConfigurationRoot Configuration;
+        public static IConfigurationRoot Configuration;
 
-		public Startup(IApplicationEnvironment appEnv)
-		{
-			var builder = new ConfigurationBuilder()
-				.SetBasePath(appEnv.ApplicationBasePath)
-				.AddJsonFile("config.json")
-				.AddEnvironmentVariables();
+        public Startup(IApplicationEnvironment appEnv)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(appEnv.ApplicationBasePath)
+                .AddJsonFile("config.json")
+                .AddEnvironmentVariables();
 
-			Configuration = builder.Build();
-		}
+            Configuration = builder.Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
@@ -43,30 +43,32 @@ namespace TheWorld
 
             services.AddLogging();
 
-			services.AddEntityFramework()
-				.AddSqlServer()
-				.AddDbContext<WorldContext>();
+            services.AddEntityFramework()
+                .AddSqlServer()
+                .AddDbContext<WorldContext>();
 
+            services.AddScoped<CoordService>();
             services.AddTransient<WorldContextSeedData>();
             services.AddScoped<IWorldRepository, WorldRepository>();
 
 #if DEBUG
-			services.AddScoped<IMailService, DebugMailService>();
+            services.AddScoped<IMailService, DebugMailService>();
 #else
-			services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IMailService, MailService>();
 #endif
-		}
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, WorldContextSeedData seeder, ILoggerFactory loggerFactory)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, WorldContextSeedData seeder, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddDebug(LogLevel.Warning);
 
-			app.UseStaticFiles();
+            app.UseStaticFiles();
 
             Mapper.Initialize(config =>
             {
                 config.CreateMap<Trip, TripViewModel>().ReverseMap();
+                config.CreateMap<Stop, StopViewModel>().ReverseMap();
             });
 
             app.UseMvc(config =>
@@ -79,7 +81,7 @@ namespace TheWorld
             });
 
             seeder.EnsureSeedData();
-		}
+        }
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);

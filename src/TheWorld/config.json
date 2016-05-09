@@ -1,8 +1,9 @@
 ﻿{
-	"AppSettings": {
-		"SiteEmailAddress": "me@aol.com"
-	},
-	"Data": {
-		"WorldContextConnection": "Server=(localdb)\\MSSQLLocalDB;Database=TheWorldDB;Trusted_Connection=true;MultipleActiveResultSets=true;"
-	}
+  "AppSettings": {
+    "SiteEmailAddress": "me@aol.com",
+    "BingKey": "AidoUB692x26P69c43mOKNh0TnuaCBIQK53TQ6fe-NA2CcyI-40jJAKapHtX3kdn"
+  },
+  "Data": {
+    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDB;Database=TheWorldDB;Trusted_Connection=true;MultipleActiveResultSets=true;"
+  }
 }
